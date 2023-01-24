@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, TextField, List, ListItem } from "@mui/material";
-import { useState } from "react";
+import data from './data.json';
+import { RamenDining } from "@mui/icons-material";
+
 
 const Todo = () => {
-  const [listItems, setListItems] = React.useState([]);
+  const [listItems, setListItems] = React.useState(data);
   const [search, setsearch] = React.useState();
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
@@ -11,7 +13,7 @@ const Todo = () => {
   };
 
   const handleAdd = () => {
-    const newListItems = [...listItems, search];
+    const newListItems = [...listItems];
     setListItems(newListItems);
   };
 
@@ -19,6 +21,7 @@ const Todo = () => {
     delete listItems[index];
     setListItems([...listItems]);
   };
+
   return (
     <div>
       <div>
@@ -32,11 +35,11 @@ const Todo = () => {
       </div>
       <List>
         {listItems?.map(
-          (item, index) =>
+          (item) =>
             item && (
-              <ListItem key={index}>
-                {item}{" "}
-                <Button onClick={() => handleDelete(index)}>Delete</Button>
+              <ListItem key={item.id}>
+                {item.value}
+                <Button onClick={() => handleDelete(item.id)}>Delete</Button>
               </ListItem>
             )
         )}
