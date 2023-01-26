@@ -1,16 +1,14 @@
-import './App.css';
-import Todo from './todo';
+import "./App.css";
+import Todo from "./todo";
 
 function App() {
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}> Todo App </h1>
-      <div style={{ textAlign: 'center'}}>
+      <h1 style={{ textAlign: "center" }}> To-Do App</h1>
+      <div style={{ textAlign: "center" }}>
         <Todo />
       </div>
-
     </div>
-
   );
 }
 
