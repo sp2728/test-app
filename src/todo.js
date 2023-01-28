@@ -4,12 +4,13 @@ import data from "./data.json";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
-
-import IconButton from "@mui/material/IconButton";
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 const Todo = () => {
   const [listItems, setListItems] = React.useState(data);
   const [search, setsearch] = React.useState();
+  const [editStatus, setEditStatus] = React.useState(false);
+  
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
     setsearch(searchValue);
@@ -24,9 +25,24 @@ const Todo = () => {
       value: search,
     };
     const newListItems = [...listItems, newItemValues];
-    console.log(newListItems);
     setListItems(newListItems);
   };
+
+  const handleEdit = (index) => {
+    //TODO: set the index
+    setEditStatus(true);
+  }
+
+  const handleEditSave = (index) => {
+
+    setEditStatus(false);
+  }
+
+
+  const handleEditCancel = (index) => {
+
+    setEditStatus(false);
+  }
 
   const handleDelete = (index) => {
     delete listItems[index];
@@ -79,11 +95,27 @@ const Todo = () => {
                   <ListItem
                     key={index}
                     style={{ display: "flex", justifyContent: "center" }}
-                    secondaryAction={
+                  >
+                    <ListItemText
+                      sx={{ wordWrap: "break-word" }}
+                      primary={item.value}
+                    />
+                    {!editStatus && <span>
                       <Button
                         xs={4}
                         size="small"
                         color="primary"
+                        variant="contained"
+                        onClick={()=> handleEdit(index)}
+                        endIcon={<ModeEditIcon />}
+                        padding="none"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        xs={4}
+                        size="small"
+                        color="warning"
                         variant="contained"
                         onClick={() => handleDelete(index)}
                         endIcon={<DeleteIcon />}
@@ -91,12 +123,29 @@ const Todo = () => {
                       >
                         Delete
                       </Button>
-                    }
-                  >
-                    <ListItemText
-                      sx={{ wordWrap: "break-word" }}
-                      primary={item.value}
-                    />
+                    </span>}
+                    {editStatus && <span>
+                      <Button
+                        xs={4}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => handleEditCancel(index)}
+                        padding="none"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        xs={4}
+                        size="small"
+                        color="warning"
+                        variant="contained"
+                        onClick={() => handleEditSave(index)}
+                        padding="none"
+                      >
+                        Save
+                      </Button>
+                    </span>}
                   </ListItem>
                 )
             )}
