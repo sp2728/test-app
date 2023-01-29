@@ -31,7 +31,6 @@ const Todo = () => {
 
   const handleEdit = (index) => {
     //TODO: set the index
-
     setEditStatus(true);
     setIndexValue(index);
   };
