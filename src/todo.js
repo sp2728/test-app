@@ -103,7 +103,11 @@ const Todo = () => {
                 item && (
                   <ListItem
                     key={index}
-                    style={{ display: "flex", justifyContent: "center" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "465px",
+                    }}
                   >
                     {editStatus && indexValue === index ? (
                       <TextField
@@ -154,7 +158,11 @@ const Todo = () => {
                       </span>
                     )}
                     {editStatus && indexValue === index && (
-                      <span>
+                      <span
+                        style={{
+                          marginRight: "25px",
+                        }}
+                      >
                         <Button
                           xs={4}
                           size="small"

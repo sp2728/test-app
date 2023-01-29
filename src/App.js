@@ -19,7 +19,10 @@ function App() {
           <Button>useState</Button>
           <Button>redux</Button>
         </div>
-        <h1 style={{ textAlign: "center" }}> To-Do App</h1>
+        <h1 class="todo" style={{ textAlign: "center" }}>
+          {" "}
+          To-Do App
+        </h1>
       </div>
       <div style={{ textAlign: "center" }}>
         <Todo />
