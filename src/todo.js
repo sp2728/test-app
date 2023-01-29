@@ -4,13 +4,14 @@ import data from "./data.json";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 const Todo = () => {
   const [listItems, setListItems] = React.useState(data);
   const [search, setsearch] = React.useState();
   const [editStatus, setEditStatus] = React.useState(false);
-  
+  const [indexValue, setIndexValue] = React.useState();
+
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
     setsearch(searchValue);
@@ -30,19 +31,28 @@ const Todo = () => {
 
   const handleEdit = (index) => {
     //TODO: set the index
+
     setEditStatus(true);
-  }
+    setIndexValue(index);
+  };
 
   const handleEditSave = (index) => {
-
     setEditStatus(false);
-  }
-
+    // search, indexValue
+    let itemLength = listItems;
+    itemLength.forEach((element, index) => {
+      if (index === indexValue) {
+        element.value = search;
+      }
+    });
+    // const newListItems = [listItems];
+    setListItems(itemLength);
+    console.log(itemLength);
+  };
 
   const handleEditCancel = (index) => {
-
     setEditStatus(false);
-  }
+  };
 
   const handleDelete = (index) => {
     delete listItems[index];
@@ -96,56 +106,80 @@ const Todo = () => {
                     key={index}
                     style={{ display: "flex", justifyContent: "center" }}
                   >
-                    <ListItemText
-                      sx={{ wordWrap: "break-word" }}
-                      primary={item.value}
-                    />
-                    {!editStatus && <span>
-                      <Button
-                        xs={4}
-                        size="small"
-                        color="primary"
-                        variant="contained"
-                        onClick={()=> handleEdit(index)}
-                        endIcon={<ModeEditIcon />}
-                        padding="none"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        xs={4}
-                        size="small"
-                        color="warning"
-                        variant="contained"
-                        onClick={() => handleDelete(index)}
-                        endIcon={<DeleteIcon />}
-                        padding="none"
-                      >
-                        Delete
-                      </Button>
-                    </span>}
-                    {editStatus && <span>
-                      <Button
-                        xs={4}
-                        size="small"
-                        color="primary"
+                    {editStatus && indexValue === index ? (
+                      <TextField
+                        onChange={handleChangeText}
+                        id="outlined-basic"
+                        label=""
                         variant="outlined"
-                        onClick={() => handleEditCancel(index)}
-                        padding="none"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        xs={4}
-                        size="small"
-                        color="warning"
-                        variant="contained"
-                        onClick={() => handleEditSave(index)}
-                        padding="none"
-                      >
-                        Save
-                      </Button>
-                    </span>}
+                        placeholder={item.value}
+                      />
+                    ) : index === indexValue ? (
+                      <ListItemText
+                        sx={{ wordWrap: "break-word" }}
+                        primary={item.value}
+                      />
+                    ) : (
+                      <ListItemText
+                        sx={{ wordWrap: "break-word" }}
+                        primary={item.value}
+                      />
+                    )}
+
+                    {!editStatus && (
+                      <span>
+                        <Button
+                          xs={4}
+                          size="small"
+                          color="primary"
+                          variant="contained"
+                          onClick={() => handleEdit(index)}
+                          endIcon={<ModeEditIcon />}
+                          padding="none"
+                          sx={{ marginRight: "5px" }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          xs={4}
+                          size="small"
+                          color="warning"
+                          variant="contained"
+                          onClick={() => handleDelete(index)}
+                          endIcon={<DeleteIcon />}
+                          padding="none"
+                          sx={{ marginRight: "5px" }}
+                        >
+                          Delete
+                        </Button>
+                      </span>
+                    )}
+                    {editStatus && indexValue === index && (
+                      <span>
+                        <Button
+                          xs={4}
+                          size="small"
+                          color="primary"
+                          variant="outlined"
+                          onClick={() => handleEditCancel(index)}
+                          padding="none"
+                          sx={{ marginRight: "5px" }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          xs={4}
+                          size="small"
+                          color="warning"
+                          variant="contained"
+                          onClick={() => handleEditSave(index)}
+                          padding="none"
+                          sx={{ marginRight: "5px" }}
+                        >
+                          Save
+                        </Button>
+                      </span>
+                    )}
                   </ListItem>
                 )
             )}
