@@ -2,10 +2,12 @@ import { Button } from "@mui/material";
 import "./App.css";
 import Todo from "./todo";
 import React from "react";
+import { Route, Routes, Link } from "react-router-dom";
+import TodoRedux from "./todoRedux";
 
 function App() {
   return (
-    <div>
+    <>
       <div
         style={{
           display: "grid",
@@ -16,18 +18,20 @@ function App() {
         }}
       >
         <div>
-          <Button>useState</Button>
-          <Button>redux</Button>
+          <Link to="/">
+            <Button>useState</Button>
+          </Link>
+          <Link to="/redux">
+            <Button>redux</Button>
+          </Link>
         </div>
-        <h1 class="todo" style={{ textAlign: "center" }}>
-          {" "}
-          To-Do App
-        </h1>
       </div>
-      <div style={{ textAlign: "center" }}>
-        <Todo />
-      </div>
-    </div>
+
+      <Routes>
+        <Route path="/" element={<Todo />} />
+        <Route path="/redux" element={<TodoRedux />} />
+      </Routes>
+    </>
   );
 }
 

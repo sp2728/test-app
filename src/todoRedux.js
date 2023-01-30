@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-const Todo = () => {
+const TodoRedux = () => {
   const [listItems, setListItems] = React.useState(data);
   const [search, setsearch] = React.useState();
   const [editStatus, setEditStatus] = React.useState(false);
@@ -62,7 +62,7 @@ const Todo = () => {
     <>
       <div style={{ textAlign: "center" }}>
         <h1 className="todo" style={{ textAlign: "center" }}>
-          To-Do App (useState)
+          To-Do App (Redux)
         </h1>
       </div>
       <div>
@@ -203,4 +203,4 @@ const Todo = () => {
   );
 };
 
-export default Todo;
+export default TodoRedux;
