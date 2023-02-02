@@ -5,12 +5,25 @@ import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { useDispatch, useSelector } from "react-redux";
+import { getItems } from "./actions/items";
 
 const TodoRedux = () => {
+  const dispatch = useDispatch();
   const [listItems, setListItems] = React.useState(data);
   const [search, setsearch] = React.useState();
   const [editStatus, setEditStatus] = React.useState(false);
   const [indexValue, setIndexValue] = React.useState();
+
+  const itemState = useSelector(state=> state.items);
+
+  React.useEffect(()=>{
+    dispatch(getItems);
+  },[])
+
+  React.useEffect(()=>{
+    console.log(itemState);
+  },[itemState])
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
