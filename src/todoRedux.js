@@ -1,80 +1,60 @@
 import React from "react";
 import { Button, TextField, List, ListItem } from "@mui/material";
-import data from "./data.json";
+import "./App.css";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useDispatch, useSelector } from "react-redux";
-import { getItems } from "./actions/items";
+import {
+  addItem,
+  editItem,
+  saveItem,
+  cancelItem,
+  deleteItem,
+} from "./redux/itemsSlice";
 
 const TodoRedux = () => {
   const dispatch = useDispatch();
-  const [listItems, setListItems] = React.useState(data);
+  const itemsTodo = useSelector((state) => state.items.value);
+  const itemsLength = itemsTodo.length;
+
   const [search, setsearch] = React.useState();
-  const [editStatus, setEditStatus] = React.useState(false);
-  const [indexValue, setIndexValue] = React.useState();
-
-  const itemState = useSelector(state=> state.items);
-
-  React.useEffect(()=>{
-    dispatch(getItems);
-  },[])
-
-  React.useEffect(()=>{
-    console.log(itemState);
-  },[itemState])
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
     setsearch(searchValue);
   };
 
-  const handleAdd = () => {
-    let itemLength = listItems.length + 1;
-    let str = itemLength.toString();
+  function handleAddItem(search, itemsLength) {
+    dispatch(addItem({ search, id: itemsLength, editedStatus: false }));
+  }
 
-    let newItemValues = {
-      id: str,
-      value: search,
-    };
-    const newListItems = [...listItems, newItemValues];
-    setListItems(newListItems);
+  const handleEditItem = (index) => {
+    dispatch(editItem(index));
   };
 
-  const handleEdit = (index) => {
-    //TODO: set the index
-    setEditStatus(true);
-    setIndexValue(index);
-  };
-
-  const handleEditSave = (index) => {
-    setEditStatus(false);
-    // search, indexValue
-    let itemLength = listItems;
-    itemLength.forEach((element, index) => {
-      if (index === indexValue) {
-        element.value = search;
-      }
-    });
-    // const newListItems = [listItems];
-    setListItems(itemLength);
-    console.log(itemLength);
+  const handleSaveItem = (index) => {
+    dispatch(saveItem({ search, index }));
   };
 
   const handleEditCancel = (index) => {
-    setEditStatus(false);
+    dispatch(cancelItem({ index, editedStatus: false }));
   };
 
   const handleDelete = (index) => {
-    delete listItems[index];
-    setListItems([...listItems]);
+    dispatch(deleteItem(index));
   };
 
   return (
     <>
       <div style={{ textAlign: "center" }}>
-        <h1 className="todo" style={{ textAlign: "center" }}>
+        <h1
+          className="todo"
+          style={{
+            textAlign: "center",
+          }}
+        >
           To-Do App (Redux)
         </h1>
       </div>
@@ -96,7 +76,11 @@ const TodoRedux = () => {
             placeholder="Add a task"
           />
 
-          <Button size="small" variant="contained" onClick={handleAdd}>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => handleAddItem(search, itemsLength)}
+          >
             Add
           </Button>
         </Box>
@@ -116,7 +100,7 @@ const TodoRedux = () => {
               alignContent: "center",
             }}
           >
-            {listItems?.map(
+            {itemsTodo?.map(
               (item, index) =>
                 item && (
                   <ListItem
@@ -127,34 +111,34 @@ const TodoRedux = () => {
                       width: "465px",
                     }}
                   >
-                    {editStatus && indexValue === index ? (
+                    {item.editedStatus && item.indexEditValue === index ? (
                       <TextField
                         onChange={handleChangeText}
                         id="outlined-basic"
                         label=""
                         variant="outlined"
-                        placeholder={item.value}
+                        placeholder={item.search}
                       />
-                    ) : index === indexValue ? (
+                    ) : index === item.indexEditValue ? (
                       <ListItemText
                         sx={{ wordWrap: "break-word" }}
-                        primary={item.value}
+                        primary={item.search}
                       />
                     ) : (
                       <ListItemText
                         sx={{ wordWrap: "break-word" }}
-                        primary={item.value}
+                        primary={item.search}
                       />
                     )}
 
-                    {!editStatus && (
+                    {!item.editedStatus && (
                       <span>
                         <Button
                           xs={4}
                           size="small"
                           color="primary"
                           variant="contained"
-                          onClick={() => handleEdit(index)}
+                          onClick={() => handleEditItem(index)}
                           endIcon={<ModeEditIcon />}
                           padding="none"
                           sx={{ marginRight: "5px" }}
@@ -175,7 +159,7 @@ const TodoRedux = () => {
                         </Button>
                       </span>
                     )}
-                    {editStatus && indexValue === index && (
+                    {item.editedStatus && item.indexEditValue === index && (
                       <span
                         style={{
                           marginRight: "25px",
@@ -197,7 +181,7 @@ const TodoRedux = () => {
                           size="small"
                           color="warning"
                           variant="contained"
-                          onClick={() => handleEditSave(index)}
+                          onClick={() => handleSaveItem(index)}
                           padding="none"
                           sx={{ marginRight: "5px" }}
                         >
@@ -208,7 +192,7 @@ const TodoRedux = () => {
                   </ListItem>
                 )
             )}
-            {listItems.length === 0 && <ListItem> No Items </ListItem>}
+            {itemsTodo.length === 0 && <ListItem> No Items </ListItem>}
           </List>
         </Box>
       </div>

@@ -10,20 +10,25 @@ function App() {
     <>
       <div
         style={{
-          display: "grid",
-          gridTemplateRows: "20px auto",
+          display: "flex",
+          // gridTemplateColumns: "auto",
           alignItems: "center",
-          justifyItems: "center",
+
           marginTop: "15px",
+          justifyContent: "space-between",
+          marginRight: "45%",
+          marginLeft: "45%",
         }}
       >
         <div>
-          <Link to="/">
-            <Button>useState</Button>
-          </Link>
-          <Link to="/redux">
-            <Button>redux</Button>
-          </Link>
+          <Button variant="outlined" href="/">
+            useState
+          </Button>
+        </div>
+        <div>
+          <Button variant="outlined" href="/redux">
+            redux
+          </Button>
         </div>
       </div>
 
