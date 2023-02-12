@@ -11,9 +11,7 @@ function App() {
       <div
         style={{
           display: "flex",
-          // gridTemplateColumns: "auto",
           alignItems: "center",
-
           marginTop: "15px",
           justifyContent: "space-between",
           marginRight: "45%",
@@ -21,13 +19,17 @@ function App() {
         }}
       >
         <div>
-          <Button variant="outlined" href="/">
-            useState
+          <Button variant="outlined">
+            <Link to="/" style={{ textDecoration: "none" }}>
+              useState
+            </Link>
           </Button>
         </div>
         <div>
-          <Button variant="outlined" href="/redux">
-            redux
+          <Button variant="outlined">
+            <Link to="/redux" style={{ textDecoration: "none" }}>
+              redux
+            </Link>
           </Button>
         </div>
       </div>

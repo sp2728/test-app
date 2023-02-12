@@ -27,7 +27,13 @@ const TodoRedux = () => {
   };
 
   function handleAddItem(search, itemsLength) {
-    dispatch(addItem({ search, id: itemsLength, editedStatus: false }));
+    dispatch(
+      addItem({
+        value: search,
+        id: itemsLength.toString(),
+        editedStatus: false,
+      })
+    );
   }
 
   const handleEditItem = (index) => {
@@ -117,17 +123,17 @@ const TodoRedux = () => {
                         id="outlined-basic"
                         label=""
                         variant="outlined"
-                        placeholder={item.search}
+                        placeholder={item.value}
                       />
                     ) : index === item.indexEditValue ? (
                       <ListItemText
                         sx={{ wordWrap: "break-word" }}
-                        primary={item.search}
+                        primary={item.value}
                       />
                     ) : (
                       <ListItemText
                         sx={{ wordWrap: "break-word" }}
-                        primary={item.search}
+                        primary={item.value}
                       />
                     )}
 

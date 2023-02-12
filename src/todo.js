@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, TextField, List, ListItem } from "@mui/material";
 import data from "./data.json";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, saveItem, deleteItem } from "./redux/itemsSlice";
 
 const Todo = () => {
-  const [listItems, setListItems] = React.useState(data);
+  const [listItems, setListItems] = React.useState([]);
   const [search, setsearch] = React.useState();
   const [editStatus, setEditStatus] = React.useState(false);
   const [indexValue, setIndexValue] = React.useState();
+
+  const itemsTodo = useSelector((state) => state.items.value);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setListItems(itemsTodo);
+  }, []);
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
@@ -18,14 +27,19 @@ const Todo = () => {
   };
 
   const handleAdd = () => {
-    let itemLength = listItems.length + 1;
+    let itemLength = listItems.length;
     let str = itemLength.toString();
 
+    dispatch(addItem({ value: search, id: str, editedStatus: false }));
+
     let newItemValues = {
-      id: str,
       value: search,
+      id: str,
+      editedStatus: false, // not needed but i've added
     };
+
     const newListItems = [...listItems, newItemValues];
+    console.log(newListItems);
     setListItems(newListItems);
   };
 
@@ -42,6 +56,7 @@ const Todo = () => {
     itemLength.forEach((element, index) => {
       if (index === indexValue) {
         element.value = search;
+        dispatch(saveItem({ search, index }));
       }
     });
     // const newListItems = [listItems];
@@ -56,6 +71,7 @@ const Todo = () => {
   const handleDelete = (index) => {
     delete listItems[index];
     setListItems([...listItems]);
+    dispatch(deleteItem(index));
   };
 
   return (

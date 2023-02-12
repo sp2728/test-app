@@ -7,8 +7,6 @@ const itemsSlice = createSlice({
   },
   reducers: {
     addItem(state, action) {
-      // console.log(action.payload);
-
       state.value.push(action.payload);
     },
     editItem(state, action) {
@@ -22,7 +20,7 @@ const itemsSlice = createSlice({
     saveItem(state, action) {
       state.value.forEach((element, index) => {
         if (index === action.payload.index) {
-          element.search = action.payload.search;
+          element.value = action.payload.search;
           element.editedStatus = false;
         }
       });
