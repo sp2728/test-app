@@ -13,6 +13,7 @@ import {
   cancelItem,
   deleteItem,
 } from "./redux/itemsSlice";
+import Modal from "@mui/material/Modal";
 
 const TodoRedux = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,19 @@ const TodoRedux = () => {
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
     setsearch(searchValue);
+  };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    // border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    display: "flex",
   };
 
   function handleAddItem(search, itemsLength) {
@@ -118,13 +132,49 @@ const TodoRedux = () => {
                     }}
                   >
                     {item.editedStatus && item.indexEditValue === index ? (
-                      <TextField
-                        onChange={handleChangeText}
-                        id="outlined-basic"
-                        label=""
-                        variant="outlined"
-                        placeholder={item.value}
-                      />
+                      <span>
+                        <TextField
+                          onChange={handleChangeText}
+                          id="outlined-basic"
+                          label=""
+                          variant="outlined"
+                          placeholder={item.value}
+                        />
+                        <Modal open={item.editedStatus}>
+                          <Box sx={style}>
+                            <TextField
+                              onChange={handleChangeText}
+                              id="outlined-basic"
+                              label=""
+                              variant="outlined"
+                              placeholder={item.value}
+                            />
+                            <span style={{ margin: "auto" }}>
+                              <Button
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => handleEditCancel(index)}
+                                padding="none"
+                                sx={{ marginRight: "10px" }}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                xs={4}
+                                size="small"
+                                color="warning"
+                                variant="contained"
+                                onClick={() => handleSaveItem(index)}
+                                padding="none"
+                                sx={{}}
+                              >
+                                Save
+                              </Button>
+                            </span>
+                          </Box>
+                        </Modal>
+                      </span>
                     ) : index === item.indexEditValue ? (
                       <ListItemText
                         sx={{ wordWrap: "break-word" }}
@@ -165,6 +215,7 @@ const TodoRedux = () => {
                         </Button>
                       </span>
                     )}
+
                     {item.editedStatus && item.indexEditValue === index && (
                       <span
                         style={{

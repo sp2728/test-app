@@ -14,6 +14,7 @@ const itemsSlice = createSlice({
         if (index === action.payload) {
           element.editedStatus = true;
           element.indexEditValue = action.payload;
+          element.isOpen = true;
         }
       });
     },
