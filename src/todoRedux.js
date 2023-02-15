@@ -15,11 +15,6 @@ import {
 } from "./redux/itemsSlice";
 import Modal from "@mui/material/Modal";
 
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import dayjs from "dayjs";
-
 const TodoRedux = () => {
   const dispatch = useDispatch();
   const itemsTodo = useSelector((state) => state.items.value);
@@ -27,7 +22,7 @@ const TodoRedux = () => {
 
   const [search, setsearch] = React.useState();
 
-  const [value, setValue] = React.useState(dayjs("2022-04-07"));
+  const [value, setValue] = React.useState(null);
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
@@ -62,8 +57,8 @@ const TodoRedux = () => {
     dispatch(editItem(index));
   };
 
-  const handleSaveItem = (index, value) => {
-    dispatch(saveItem({ search, index, time: value.$d }));
+  const handleSaveItem = (index) => {
+    dispatch(saveItem({ search, index, time: value }));
   };
 
   const handleEditCancel = (index) => {
@@ -73,6 +68,10 @@ const TodoRedux = () => {
   const handleDelete = (index) => {
     dispatch(deleteItem(index));
   };
+
+  const changeDate = (event) => {
+    setValue(event.target.value);
+  }
 
   return (
     <>
@@ -157,56 +156,47 @@ const TodoRedux = () => {
                               variant="outlined"
                               placeholder={item.value}
                             />
-                            <span style={{ margin: "auto" }}>
-                              <Button
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                                onClick={() => handleEditCancel(index)}
-                                padding="none"
-                                sx={{ marginRight: "10px" }}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                xs={4}
-                                size="small"
-                                color="warning"
-                                variant="contained"
-                                onClick={() => handleSaveItem(index, value)}
-                                padding="none"
-                                sx={{}}
-                              >
-                                Save
-                              </Button>
-                              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DateTimePicker
-                                  label="Date&Time picker"
-                                  value={value}
-                                  onChange={(newValue) => {
-                                    setValue(newValue);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField {...params} />
-                                  )}
-                                />
-                              </LocalizationProvider>
-                            </span>
+                            <input type="date" id="start" name="trip-start"
+                              value="2018-07-22"
+                              min="2018-01-01" max="2018-12-31"
+                              onChange={(event) => changeDate(event)}
+                            />
+                            <Button
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              onClick={() => handleEditCancel(index)}
+                              padding="none"
+                              sx={{ marginRight: "10px" }}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              xs={4}
+                              size="small"
+                              color="warning"
+                              variant="contained"
+                              onClick={() => handleSaveItem(index)}
+                              padding="none"
+                              sx={{}}
+                            >
+                              Save
+                            </Button>
                           </Box>
                         </Modal>
                       </span>
-                    ) : index === item.indexEditValue ? (
-                      <ListItemText
-                        sx={{ wordWrap: "break-word" }}
-                        primary={item.value}
-                      />
                     ) : (
                       <>
                         <ListItemText
                           sx={{ wordWrap: "break-word" }}
-                          primary={<>{item.value}</>}
+                          primary={item.value}
+                        />
+                        <ListItemText
+                          sx={{ wordWrap: "break-word" }}
+                          primary={item.time}
                         />
                       </>
+
                     )}
 
                     {!item.editedStatus && (
@@ -260,7 +250,7 @@ const TodoRedux = () => {
                           size="small"
                           color="warning"
                           variant="contained"
-                          onClick={() => handleSaveItem(index, value)}
+                          onClick={() => handleSaveItem(index)}
                           padding="none"
                           sx={{ marginRight: "5px" }}
                         >
