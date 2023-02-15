@@ -22,6 +22,8 @@ const itemsSlice = createSlice({
       state.value.forEach((element, index) => {
         if (index === action.payload.index) {
           element.value = action.payload.search;
+          element.time = action.payload.time;
+          // console.log(element.time);
           element.editedStatus = false;
         }
       });

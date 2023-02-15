@@ -15,12 +15,19 @@ import {
 } from "./redux/itemsSlice";
 import Modal from "@mui/material/Modal";
 
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
+
 const TodoRedux = () => {
   const dispatch = useDispatch();
   const itemsTodo = useSelector((state) => state.items.value);
   const itemsLength = itemsTodo.length;
 
   const [search, setsearch] = React.useState();
+
+  const [value, setValue] = React.useState(dayjs("2022-04-07"));
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
@@ -46,6 +53,7 @@ const TodoRedux = () => {
         value: search,
         id: itemsLength.toString(),
         editedStatus: false,
+        time: "null",
       })
     );
   }
@@ -54,8 +62,8 @@ const TodoRedux = () => {
     dispatch(editItem(index));
   };
 
-  const handleSaveItem = (index) => {
-    dispatch(saveItem({ search, index }));
+  const handleSaveItem = (index, value) => {
+    dispatch(saveItem({ search, index, time: value.$d }));
   };
 
   const handleEditCancel = (index) => {
@@ -165,12 +173,24 @@ const TodoRedux = () => {
                                 size="small"
                                 color="warning"
                                 variant="contained"
-                                onClick={() => handleSaveItem(index)}
+                                onClick={() => handleSaveItem(index, value)}
                                 padding="none"
                                 sx={{}}
                               >
                                 Save
                               </Button>
+                              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DateTimePicker
+                                  label="Date&Time picker"
+                                  value={value}
+                                  onChange={(newValue) => {
+                                    setValue(newValue);
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField {...params} />
+                                  )}
+                                />
+                              </LocalizationProvider>
                             </span>
                           </Box>
                         </Modal>
@@ -181,10 +201,12 @@ const TodoRedux = () => {
                         primary={item.value}
                       />
                     ) : (
-                      <ListItemText
-                        sx={{ wordWrap: "break-word" }}
-                        primary={item.value}
-                      />
+                      <>
+                        <ListItemText
+                          sx={{ wordWrap: "break-word" }}
+                          primary={<>{item.value}</>}
+                        />
+                      </>
                     )}
 
                     {!item.editedStatus && (
@@ -238,7 +260,7 @@ const TodoRedux = () => {
                           size="small"
                           color="warning"
                           variant="contained"
-                          onClick={() => handleSaveItem(index)}
+                          onClick={() => handleSaveItem(index, value)}
                           padding="none"
                           sx={{ marginRight: "5px" }}
                         >
