@@ -2,9 +2,7 @@ import React from "react";
 import { Button, TextField, List, ListItem } from "@mui/material";
 import "./App.css";
 import Box from "@mui/material/Box";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
@@ -14,6 +12,11 @@ import {
   deleteItem,
 } from "./redux/itemsSlice";
 import Modal from "@mui/material/Modal";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Stack from "@mui/material/Stack";
+import OpenModal from "./Components/OpenModal";
+import DeleteAndEditButton from "./Components/DeleteAndEditButton";
+import EditAndCancelButton from "./EditAndCancelButton";
 
 const TodoRedux = () => {
   const dispatch = useDispatch();
@@ -21,25 +24,12 @@ const TodoRedux = () => {
   const itemsLength = itemsTodo.length;
 
   const [search, setsearch] = React.useState();
-
   const [value, setValue] = React.useState(null);
+  const [valueTime, setValueTime] = React.useState(null);
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
     setsearch(searchValue);
-  };
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    // border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
   };
 
   function handleAddItem(search, itemsLength) {
@@ -58,7 +48,7 @@ const TodoRedux = () => {
   };
 
   const handleSaveItem = (index) => {
-    dispatch(saveItem({ search, index, time: value }));
+    dispatch(saveItem({ search, index, time: value + " " + valueTime }));
   };
 
   const handleEditCancel = (index) => {
@@ -70,21 +60,23 @@ const TodoRedux = () => {
   };
 
   const changeDate = (event) => {
-    setValue(event.target.value);
-  }
+    setValue(event.target.value.toString());
+  };
+  const changeTime = (event) => {
+    setValueTime(event.target.value.toString());
+  };
 
   return (
     <>
-      <div style={{ textAlign: "center" }}>
-        <h1
-          className="todo"
-          style={{
-            textAlign: "center",
-          }}
-        >
-          To-Do App (Redux)
-        </h1>
-      </div>
+      <h1
+        className="todo"
+        style={{
+          textAlign: "center",
+        }}
+      >
+        To-Do App
+      </h1>
+
       <div>
         <Box
           sx={{
@@ -139,7 +131,7 @@ const TodoRedux = () => {
                     }}
                   >
                     {item.editedStatus && item.indexEditValue === index ? (
-                      <span>
+                      <Box component="span">
                         <TextField
                           onChange={handleChangeText}
                           id="outlined-basic"
@@ -147,116 +139,56 @@ const TodoRedux = () => {
                           variant="outlined"
                           placeholder={item.value}
                         />
+                        <span
+                          style={{
+                            marginRight: "25px",
+                          }}
+                        >
+                          <EditAndCancelButton
+                            handleEditCancel={handleEditCancel}
+                            handleSaveItem={handleSaveItem}
+                            index={index}
+                          />
+                        </span>
                         <Modal open={item.editedStatus}>
-                          <Box sx={style}>
-                            <TextField
-                              onChange={handleChangeText}
-                              id="outlined-basic"
-                              label=""
-                              variant="outlined"
-                              placeholder={item.value}
+                          <>
+                            <OpenModal
+                              item={item}
+                              handleChangeText={handleChangeText}
+                              index={index}
+                              handleEditCancel={handleEditCancel}
+                              changeDate={changeDate}
+                              changeTime={changeTime}
+                              handleSaveItem={handleSaveItem}
                             />
-                            <input type="date" id="start" name="trip-start"
-                              value="2018-07-22"
-                              min="2018-01-01" max="2018-12-31"
-                              onChange={(event) => changeDate(event)}
-                            />
-                            <Button
-                              size="small"
-                              color="primary"
-                              variant="outlined"
-                              onClick={() => handleEditCancel(index)}
-                              padding="none"
-                              sx={{ marginRight: "10px" }}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              xs={4}
-                              size="small"
-                              color="warning"
-                              variant="contained"
-                              onClick={() => handleSaveItem(index)}
-                              padding="none"
-                              sx={{}}
-                            >
-                              Save
-                            </Button>
-                          </Box>
+                          </>
                         </Modal>
-                      </span>
+                      </Box>
                     ) : (
-                      <>
+                      <Box>
                         <ListItemText
                           sx={{ wordWrap: "break-word" }}
                           primary={item.value}
+                          secondary={
+                            <Stack
+                              direction="row"
+                              spacing={3}
+                              alignItems="center"
+                            >
+                              <AccessTimeIcon
+                                sx={{ width: "15px", paddingRight: "5px" }}
+                              />
+                              {item.time}
+                            </Stack>
+                          }
                         />
-                        <ListItemText
-                          sx={{ wordWrap: "break-word" }}
-                          primary={item.time}
+
+                        <DeleteAndEditButton
+                          handleEditItem={handleEditItem}
+                          handleDelete={handleDelete}
+                          index={index}
                         />
-                      </>
-
-                    )}
-
-                    {!item.editedStatus && (
-                      <span>
-                        <Button
-                          xs={4}
-                          size="small"
-                          color="primary"
-                          variant="contained"
-                          onClick={() => handleEditItem(index)}
-                          endIcon={<ModeEditIcon />}
-                          padding="none"
-                          sx={{ marginRight: "5px" }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          xs={4}
-                          size="small"
-                          color="warning"
-                          variant="contained"
-                          onClick={() => handleDelete(index)}
-                          endIcon={<DeleteIcon />}
-                          padding="none"
-                          sx={{ marginRight: "5px" }}
-                        >
-                          Delete
-                        </Button>
-                      </span>
-                    )}
-
-                    {item.editedStatus && item.indexEditValue === index && (
-                      <span
-                        style={{
-                          marginRight: "25px",
-                        }}
-                      >
-                        <Button
-                          xs={4}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                          onClick={() => handleEditCancel(index)}
-                          padding="none"
-                          sx={{ marginRight: "5px" }}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          xs={4}
-                          size="small"
-                          color="warning"
-                          variant="contained"
-                          onClick={() => handleSaveItem(index)}
-                          padding="none"
-                          sx={{ marginRight: "5px" }}
-                        >
-                          Save
-                        </Button>
-                      </span>
+                      </Box>
                     )}
                   </ListItem>
                 )
