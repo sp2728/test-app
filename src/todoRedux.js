@@ -68,16 +68,7 @@ const TodoRedux = () => {
 
   return (
     <>
-      <h1
-        className="todo"
-        style={{
-          textAlign: "center",
-        }}
-      >
-        To-Do App
-      </h1>
-
-      <div>
+      <div style={{ marginTop: "15px" }}>
         <Box
           sx={{
             display: "flex",
@@ -105,18 +96,14 @@ const TodoRedux = () => {
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
+            margin: "0px auto 0px auto",
+            width: "400px",
           }}
         >
           <List
             sx={{
               width: "100%",
-              maxWidth: 360,
               bgcolor: "background.paper",
-              justifyContent: "center",
-              alignContent: "center",
             }}
           >
             {itemsTodo?.map(
@@ -125,9 +112,7 @@ const TodoRedux = () => {
                   <ListItem
                     key={index}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      width: "465px",
+                      border: "2px solid red",
                     }}
                   >
                     {item.editedStatus && item.indexEditValue === index ? (
