@@ -3,10 +3,12 @@ import Box from "@mui/material/Box";
 import { Button, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import "../App.css";
+import Modal from "@mui/material/Modal";
 
 import React from "react";
 
 export default function OpenModal({
+  open,
   item,
   handleChangeText,
   index,
@@ -28,7 +30,7 @@ export default function OpenModal({
     flexDirection: "column",
   };
   return (
-    <>
+    <Modal open={open}>
       <Box sx={style}>
         <Stack spacing={2}>
           <Box
@@ -86,6 +88,6 @@ export default function OpenModal({
           </Button>
         </Stack>
       </Box>
-    </>
+    </Modal>
   );
 }

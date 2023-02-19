@@ -11,7 +11,6 @@ import {
   cancelItem,
   deleteItem,
 } from "./redux/itemsSlice";
-import Modal from "@mui/material/Modal";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stack from "@mui/material/Stack";
 import OpenModal from "./Components/OpenModal";
@@ -68,16 +67,8 @@ const TodoRedux = () => {
 
   return (
     <>
-      <div style={{ marginTop: "15px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "center",
-            justifyContent: "center",
-            columnGap: "50px",
-          }}
-        >
+      <div style={{ marginTop: "15px", textAlign: "center" }}>
+        <Stack spacing={4} direction="row" sx={{ justifyContent: "center" }}>
           <TextField
             onChange={handleChangeText}
             id="outlined-basic"
@@ -93,7 +84,7 @@ const TodoRedux = () => {
           >
             Add
           </Button>
-        </Box>
+        </Stack>
         <Box
           sx={{
             margin: "0px auto 0px auto",
@@ -135,19 +126,17 @@ const TodoRedux = () => {
                             index={index}
                           />
                         </span>
-                        <Modal open={item.editedStatus}>
-                          <>
-                            <OpenModal
-                              item={item}
-                              handleChangeText={handleChangeText}
-                              index={index}
-                              handleEditCancel={handleEditCancel}
-                              changeDate={changeDate}
-                              changeTime={changeTime}
-                              handleSaveItem={handleSaveItem}
-                            />
-                          </>
-                        </Modal>
+
+                        <OpenModal
+                          open={item.editedStatus}
+                          item={item}
+                          handleChangeText={handleChangeText}
+                          index={index}
+                          handleEditCancel={handleEditCancel}
+                          changeDate={changeDate}
+                          changeTime={changeTime}
+                          handleSaveItem={handleSaveItem}
+                        />
                       </Box>
                     ) : (
                       <Box>
