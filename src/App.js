@@ -14,7 +14,7 @@ function App() {
           display: "flex",
           justifyContent: "space-between",
           padding: "0px 15px 0px 15px",
-          backgroundColor: "#f3f6f9",
+          backgroundColor: "#f9f9f9",
         }}
       >
         <h1
@@ -34,13 +34,13 @@ function App() {
           }}
         >
           <Stack spacing={2} direction="row">
-            <Button variant="contained">
+            <Button variant="contained" disableElevation>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 useState
               </Link>
             </Button>
 
-            <Button variant="contained">
+            <Button variant="contained" disableElevation>
               <Link
                 to="/redux"
                 style={{ textDecoration: "none", color: "white" }}
