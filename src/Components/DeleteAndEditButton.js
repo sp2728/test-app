@@ -12,7 +12,7 @@ export default function DeleteAndEditButton({
     <span>
       <Button
         xs={4}
-        size="small"
+        size="medium"
         color="primary"
         variant="contained"
         onClick={() => handleEditItem(index)}
@@ -24,7 +24,7 @@ export default function DeleteAndEditButton({
       </Button>
       <Button
         xs={4}
-        size="small"
+        size="medium"
         color="warning"
         variant="contained"
         onClick={() => handleDelete(index)}

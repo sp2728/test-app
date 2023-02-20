@@ -60,28 +60,38 @@ export default function OpenModal({
             id="outlined-basic"
             label=""
             variant="outlined"
-            placeholder={item.value}
+            defaultValue={item.value}
+            size="small"
           />
           <input
             type="date"
             id="start"
             name="trip-start"
-            value="2023-02-15"
+            value={"2023-02-15"}
             onChange={(event) => changeDate(event)}
+            style={{
+              padding: "5px",
+              fontFamily: "inherit",
+              outlineColor: "#1976d2",
+            }}
           />
           <input
             type="time"
             id="appt"
             name="appt"
+            style={{
+              padding: "5px",
+              fontFamily: "inherit",
+              outlineColor: "#1976d2",
+            }}
             onChange={(event) => changeTime(event)}
-          ></input>{" "}
+          ></input>
           <Button
             xs={4}
-            size="small"
+            size="medium"
             color="warning"
             variant="contained"
             onClick={() => handleSaveItem(index)}
-            padding="none"
             sx={{}}
           >
             Save

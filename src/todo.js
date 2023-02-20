@@ -39,7 +39,7 @@ const Todo = () => {
     };
 
     const newListItems = [...listItems, newItemValues];
-    console.log(newListItems);
+
     setListItems(newListItems);
   };
 

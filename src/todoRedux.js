@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, TextField, List, ListItem } from "@mui/material";
 import "./App.css";
+import "./todoRedux.css";
 import Box from "@mui/material/Box";
 import ListItemText from "@mui/material/ListItemText";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,9 @@ import Stack from "@mui/material/Stack";
 import OpenModal from "./Components/OpenModal";
 import DeleteAndEditButton from "./Components/DeleteAndEditButton";
 import EditAndCancelButton from "./EditAndCancelButton";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
+import IconButton from "@mui/material/IconButton";
+import DateAndTimeBtn from "./Components/DateAndTimeBtn";
 
 const TodoRedux = () => {
   const dispatch = useDispatch();
@@ -25,6 +29,7 @@ const TodoRedux = () => {
   const [search, setsearch] = React.useState();
   const [value, setValue] = React.useState(null);
   const [valueTime, setValueTime] = React.useState(null);
+  const [showDate, setshowDate] = React.useState(false);
 
   const handleChangeText = (event) => {
     const searchValue = event.target.value;
@@ -37,11 +42,14 @@ const TodoRedux = () => {
         value: search,
         id: itemsLength.toString(),
         editedStatus: false,
-        time: "null",
+        time: value + " " + valueTime,
       })
     );
   }
 
+  function handleShowDate() {
+    setshowDate(!showDate);
+  }
   const handleEditItem = (index) => {
     dispatch(editItem(index));
   };
@@ -67,24 +75,38 @@ const TodoRedux = () => {
 
   return (
     <>
-      <div style={{ marginTop: "15px", textAlign: "center" }}>
-        <Stack spacing={4} direction="row" sx={{ justifyContent: "center" }}>
+      <div className="firstDiv">
+        <Stack
+          spacing={3}
+          direction="row"
+          sx={{ justifyContent: "center", alignItems: "center" }}
+        >
           <TextField
             onChange={handleChangeText}
             id="outlined-basic"
             label=""
             variant="outlined"
             placeholder="Add a task"
+            size="small"
+            sx={{ width: "300px" }}
           />
+          <IconButton onClick={() => handleShowDate()}>
+            <AddAlertIcon />
+          </IconButton>
 
           <Button
-            size="small"
+            size="medium"
             variant="contained"
             onClick={() => handleAddItem(search, itemsLength)}
           >
             Add
           </Button>
         </Stack>
+        <div style={{ marginTop: "15px", marginRight: "210px" }}>
+          {showDate && (
+            <DateAndTimeBtn changeDate={changeDate} changeTime={changeTime} />
+          )}
+        </div>
         <Box
           sx={{
             margin: "0px auto 0px auto",
@@ -100,33 +122,13 @@ const TodoRedux = () => {
             {itemsTodo?.map(
               (item, index) =>
                 item && (
-                  <ListItem
-                    key={index}
-                    style={{
-                      border: "2px solid red",
-                    }}
-                  >
+                  <ListItem key={index} style={{}}>
                     {item.editedStatus && item.indexEditValue === index ? (
-                      <Box component="span">
-                        <TextField
-                          onChange={handleChangeText}
-                          id="outlined-basic"
-                          label=""
-                          variant="outlined"
-                          placeholder={item.value}
-                        />
-                        <span
-                          style={{
-                            marginRight: "25px",
-                          }}
-                        >
-                          <EditAndCancelButton
-                            handleEditCancel={handleEditCancel}
-                            handleSaveItem={handleSaveItem}
-                            index={index}
-                          />
-                        </span>
-
+                      <Stack
+                        spacing={5}
+                        direction="row"
+                        sx={{ justifyContent: "center", alignItems: "center" }}
+                      >
                         <OpenModal
                           open={item.editedStatus}
                           item={item}
@@ -137,23 +139,25 @@ const TodoRedux = () => {
                           changeTime={changeTime}
                           handleSaveItem={handleSaveItem}
                         />
-                      </Box>
+                      </Stack>
                     ) : (
-                      <Box>
+                      <>
                         <ListItemText
                           sx={{ wordWrap: "break-word" }}
                           primary={item.value}
                           secondary={
-                            <Stack
-                              direction="row"
-                              spacing={3}
-                              alignItems="center"
-                            >
-                              <AccessTimeIcon
-                                sx={{ width: "15px", paddingRight: "5px" }}
-                              />
-                              {item.time}
-                            </Stack>
+                            !item.time.includes(null) && (
+                              <Stack
+                                direction="row"
+                                spacing={3}
+                                alignItems="center"
+                              >
+                                <AccessTimeIcon
+                                  sx={{ width: "15px", paddingRight: "5px" }}
+                                />
+                                {item.time}
+                              </Stack>
+                            )
                           }
                         />
 
@@ -162,7 +166,7 @@ const TodoRedux = () => {
                           handleDelete={handleDelete}
                           index={index}
                         />
-                      </Box>
+                      </>
                     )}
                   </ListItem>
                 )
