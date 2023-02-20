@@ -18,7 +18,7 @@ export default function DeleteAndEditButton({
         onClick={() => handleEditItem(index)}
         endIcon={<ModeEditIcon />}
         padding="none"
-        sx={{ marginRight: "5px" }}
+        sx={{ marginRight: "15px" }}
       >
         Edit
       </Button>
@@ -30,7 +30,7 @@ export default function DeleteAndEditButton({
         onClick={() => handleDelete(index)}
         endIcon={<DeleteIcon />}
         padding="none"
-        sx={{ marginRight: "5px" }}
+        sx={{ marginRight: "-5px" }}
       >
         Delete
       </Button>

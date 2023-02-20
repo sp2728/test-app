@@ -110,7 +110,7 @@ const TodoRedux = () => {
         <Box
           sx={{
             margin: "0px auto 0px auto",
-            width: "400px",
+            width: "475px",
           }}
         >
           <List
